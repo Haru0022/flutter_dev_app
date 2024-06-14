@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+
+/*import 'package:flutter/material.dart';
 
 void main() {
   runApp(const MyApp());
@@ -120,6 +121,81 @@ class _MyHomePageState extends State<MyHomePage> {
         tooltip: 'Increment',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+*/
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MemoApp());
+}
+
+class MemoApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'メモアプリ',
+      theme: ThemeData(
+        primarySwatch: Colors.grey,
+      ),
+      home: MemoHomePage(),
+    );
+  }
+}
+
+class MemoHomePage extends StatefulWidget {
+  @override
+  _MemoHomePageState createState() => _MemoHomePageState();
+}
+
+class _MemoHomePageState extends State<MemoHomePage> {
+  List<String> memoList = ['メモ1', 'メモ2', 'メモ3']; // メモリストの初期データ
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('メモアプリ'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: () {
+              // プロフィールアイコンのアクション
+            },
+          ),
+        ],
+      ),
+      body: ListView.builder(
+        itemCount: memoList.length,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 100.0,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Center(
+                child: Text(
+                  memoList[index],
+                  style: TextStyle(fontSize: 20.0),
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // プラスボタンが押されたときのアクション
+          setState(() {
+            memoList.add('新しいメモ'); // メモリストに新しいメモを追加
+          });
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
