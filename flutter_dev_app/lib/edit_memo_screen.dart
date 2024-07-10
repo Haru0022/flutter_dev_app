@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'memo.dart';
 
-// メモを編集するための画面を提供するウィジェット
 class EditMemoScreen extends StatefulWidget {
-  // 編集するメモの内容
-  final String memo;
-  // 編集されたメモを保存するためのコールバック関数
-  final ValueChanged<String> onSave;
+  final Memo memo;
+  final ValueChanged<Memo> onSave;
 
   EditMemoScreen({required this.memo, required this.onSave});
 
@@ -13,52 +11,68 @@ class EditMemoScreen extends StatefulWidget {
   _EditMemoScreenState createState() => _EditMemoScreenState();
 }
 
-// EditMemoScreenの状態を管理するクラス
 class _EditMemoScreenState extends State<EditMemoScreen> {
-  // テキストフィールドの内容を管理するコントローラー
-  late TextEditingController _controller;
+  late TextEditingController _titleController;
+  late TextEditingController _contentController;
 
   @override
   void initState() {
     super.initState();
-    // コントローラーを初期化し、初期値としてメモの内容を設定
-    _controller = TextEditingController(text: widget.memo);
+    _titleController = TextEditingController(text: widget.memo.title);
+    _contentController = TextEditingController(text: widget.memo.content);
   }
 
   @override
   void dispose() {
-    // コントローラーを破棄
-    _controller.dispose();
+    _titleController.dispose();
+    _contentController.dispose();
     super.dispose();
+  }
+
+  void _saveMemo() {
+    widget.onSave(
+      Memo(
+        title: _titleController.text,
+        content: _contentController.text,
+      ),
+    );
+    Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      // 戻るボタンが押されたときにメモの内容を保存
-      onWillPop: () async {
-        widget.onSave(_controller.text);
-        return true;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          // 画面のタイトルを設定
-          title: Text('メモを編集'),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          // テキストフィールドを配置
-          child: TextField(
-            // テキストコントローラーを設定
-            controller: _controller,
-            // テキストフィールドの行数を無制限に設定
-            maxLines: null,
-            // ヒントテキストを設定
-            decoration: InputDecoration(
-              hintText: 'メモを入力してください',
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('メモを編集'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.save),
+            onPressed: _saveMemo,
           ),
-          
+        ],
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            TextField(
+              controller: _titleController,
+              decoration: InputDecoration(
+                hintText: 'タイトルを入力してください',
+              ),
+            ),
+            SizedBox(height: 16.0),
+            Expanded(
+              child: TextField(
+                controller: _contentController,
+                maxLines: null,
+                expands: true,
+                decoration: InputDecoration(
+                  hintText: '本文を入力してください',
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
