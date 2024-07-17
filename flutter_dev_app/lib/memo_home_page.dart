@@ -43,6 +43,7 @@ class _MemoHomePageState extends State<MemoHomePage> {
               int index = memoList.indexOf(memo);
               memoList[index] = updatedMemo;
             });
+            Navigator.pop(context); // Ensure the view screen pops after saving
           },
         ),
       ),
