@@ -4,7 +4,7 @@ import 'memo.dart';
 class ViewMemoScreen extends StatelessWidget {
   final Memo memo;
 
-  ViewMemoScreen({required this.memo});
+  ViewMemoScreen({required this.memo, required Null Function(dynamic updatedMemo) onSave});
 
   @override
   Widget build(BuildContext context) {

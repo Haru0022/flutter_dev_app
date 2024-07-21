@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'memo.dart';
 
@@ -30,25 +29,23 @@ class _EditMemoScreenState extends State<EditMemoScreen> {
     super.dispose();
   }
 
-  void _saveMemo() {
-    widget.onSave(
-      Memo(
-        title: _titleController.text,
-        content: _contentController.text,
-      ),
-    );
-    Navigator.pop(context);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('メモを編集'),
+        title: Text('Edit Memo'),
         actions: [
           IconButton(
             icon: Icon(Icons.save),
-            onPressed: _saveMemo,
+            onPressed: () {
+              widget.onSave(
+                Memo(
+                  title: _titleController.text,
+                  content: _contentController.text,
+                ),
+              );
+              Navigator.of(context).pop();
+            },
           ),
         ],
       ),
@@ -58,20 +55,12 @@ class _EditMemoScreenState extends State<EditMemoScreen> {
           children: [
             TextField(
               controller: _titleController,
-              decoration: InputDecoration(
-                hintText: 'タイトルを入力してください',
-              ),
+              decoration: InputDecoration(labelText: 'Title'),
             ),
-            SizedBox(height: 16.0),
-            Expanded(
-              child: TextField(
-                controller: _contentController,
-                maxLines: null,
-                expands: true,
-                decoration: InputDecoration(
-                  hintText: '本文を入力してください',
-                ),
-              ),
+            TextField(
+              controller: _contentController,
+              decoration: InputDecoration(labelText: 'Content'),
+              maxLines: 10,
             ),
           ],
         ),
@@ -79,5 +68,3 @@ class _EditMemoScreenState extends State<EditMemoScreen> {
     );
   }
 }
-
-
